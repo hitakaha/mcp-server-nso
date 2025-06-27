@@ -1,7 +1,8 @@
 # MCP server for NSO
- How to set up on Windows
+- Python and uv are required prior to the installation.
+- runcli package is required, download from following and re-compile if necessary.
+https://github.com/hitakaha/runcli
 
-Python and uv are required prior to the installation.
 
 ## 1. Install Claude
 Install Claude from following.
@@ -17,7 +18,7 @@ uv venv
 uv add mcs[cli] httpx
 ```
 
-Then, copy server.py in this repository.
+Then, copy server.py to the directory.
 
 ## 3. Add MCP to Claude
 Add following to Claude.
