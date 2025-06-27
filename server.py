@@ -65,10 +65,6 @@ def exec_cmd(device, command) -> str:
 
     return ret
 
-@mcp.tool
-async def add(a, b):
-    return a+b
-
 if __name__ == "__main__":
     mcp.run(transport='stdio')
 
