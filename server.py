@@ -63,8 +63,6 @@ def exec_cmd(device, command) -> str:
 
     return ret
 
-
-
 @mcp.tool
 def config_dryrun(device, config) -> str:
     """
