@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "nso": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "C:\\Users\\dcloud\\mcp\\nso",
+        "run",
+        "server.py"
+      ]
+    }
+  }
+}

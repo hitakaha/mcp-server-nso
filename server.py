@@ -35,8 +35,6 @@ def exec_cmd(device, command) -> str:
     }
     auth = HTTPBasicAuth(USERNAME, PASSWORD)
 
-
-
     url = f"{nso_restconf}/operations/tailf-ncs:devices/device={device}/live-status/exec/any"
     cmd = command
 
@@ -65,9 +63,98 @@ def exec_cmd(device, command) -> str:
 
     return ret
 
+
+
 @mcp.tool
-async def add(a, b):
-    return a+b
+def config_dryrun(device, config) -> str:
+    """
+    method to dry-run CLI through RESTCONF, equivalent to following
+
+    $ curl -u admin:admin http://127.0.0.1:8080/restconf/\
+        operations/tailf-ncs:devices/runcli:runcli-dryrun \  << runcli-dryrun
+        -H 'Content-Type: application/yang-data+json' \
+        -X POST -d '{"input": { "device": "R1", "command":"hostname test"}}'
+
+    args:
+    - device: target device
+    - command: command to execute
+
+    return:
+    - outputs -> str
+    """
+
+    nso_restconf = f"http://{NSO_ADDR}:{NSO_PORT}/restconf"
+    url = f"{nso_restconf}/operations/tailf-ncs:devices/runcli:runcli-dryrun"
+
+    headers = {
+        'Content-Type':'application/yang-data+json',
+        'Accept': 'application/yang-data+json'
+    }
+
+    auth = HTTPBasicAuth(USERNAME, PASSWORD)
+
+    payload = {
+        "input":
+        {
+            "device": device,
+            "command": config
+        }
+    }
+
+    response = requests.post(
+        url,
+        headers=headers,
+        auth=auth,
+        json=payload
+    )
+
+    return response.json()["runcli:output"]["output"]
+
+@mcp.tool
+def config_commit(device, config) -> str:
+    """
+    method to commit CLI through RESTCONF, equivalent to following
+
+    $ curl -u admin:admin http://127.0.0.1:8080/restconf/\
+        operations/tailf-ncs:devices/runcli:runcli-commit \  << runcli-commit
+        -H 'Content-Type: application/yang-data+json' \
+        -X POST -d '{"input": { "device": "R1", "command":"hostname test"}}'
+
+    args:
+    - device: target device
+    - command: command to execute
+
+    return:
+    - outputs -> str
+    """
+
+    nso_restconf = f"http://{NSO_ADDR}:{NSO_PORT}/restconf"
+    url = f"{nso_restconf}/operations/tailf-ncs:devices/runcli:runcli-commit"
+
+    headers = {
+        'Content-Type':'application/yang-data+json',
+        'Accept': 'application/yang-data+json'
+    }
+
+    auth = HTTPBasicAuth(USERNAME, PASSWORD)
+
+    payload = {
+        "input":
+        {
+            "device": device,
+            "command": config
+        }
+    }
+
+    response = requests.post(
+        url,
+        headers=headers,
+        auth=auth,
+        json=payload
+    )
+
+    return response.json()["runcli:output"]["output"]
+
 
 if __name__ == "__main__":
     mcp.run(transport='stdio')
