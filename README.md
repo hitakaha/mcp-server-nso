@@ -1,6 +1,5 @@
-MCP server for NSO
-
-# How to set up on Windows
+# MCP server for NSO
+ How to set up on Windows
 
 Python and uv are required prior to the installation.
 
